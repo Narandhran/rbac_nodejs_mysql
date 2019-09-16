@@ -1,0 +1,17 @@
+{
+  "local": {
+    "username": "naren",
+    "password": "password",
+    "database": "rbac",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "development": {
+    "username": "userx",
+    "password": "pass",
+    "database": "db",
+    "host": "host",
+    "dialect": "mysql",
+    "port": 3600
+  }
+}
