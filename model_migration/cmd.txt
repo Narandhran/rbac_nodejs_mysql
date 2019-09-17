@@ -1,0 +1,10 @@
+-- model || user
+npx sequelize-cli model:generate --name user --attributes id_pk:integer, firstName:string,lastName:string,username,password
+-- model || resource
+npx sequelize-cli model:generate --name resource --attributes id_pk:integer,resource:string
+-- model || permission
+npx sequelize-cli model:generate --name permission --attributes id_pk:integer,permission:string, p_id:integer
+-- model || role
+npx sequelize-cli model:generate --name role --attributes id_pk:integer,role:string
+-- model || auth
+npx sequelize-cli model:generate --name auth --attributes id_pk:integer,fk_user:integer,fk_role:integer,fk_resource

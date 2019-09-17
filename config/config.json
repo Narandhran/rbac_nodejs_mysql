@@ -1,12 +1,12 @@
 {
-  "local": {
+  "development": {
     "username": "naren",
     "password": "password",
     "database": "rbac",
     "host": "localhost",
     "dialect": "mysql"
   },
-  "development": {
+  "production": {
     "username": "userx",
     "password": "pass",
     "database": "db",
