@@ -10,27 +10,28 @@ module.exports = {
       },
       fk_user: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
         references: {
           model: 'users',
           key: 'id_pk'
         }
       },
-      fk_role: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'roles',
-          key: 'id_pk'
-        }
+      role: {
+        type: Sequelize.STRING
       },
-      fk_resource: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'resources',
-          key: 'id_pk'
-        }
+      resource: {
+        type: Sequelize.STRING
+      },
+      permission: {
+        type: Sequelize.STRING
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });
   },
