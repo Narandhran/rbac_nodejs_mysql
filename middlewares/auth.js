@@ -1,7 +1,8 @@
-const JwtService = require('../security/jwt.service')
-const envelope = require('../utils/envelope')
+const JwtService = require('../security/jwt.service'),
+    envelope = require('../utils/envelope'),
+    p_util = require('../security/permission.util');
 
-function tokenVerification(req, res, next) {
+function authenticate(req, res, next) {
     if (JwtService.verify(req.headers.authorization, req.body)) {
         req.verifiedToken = JwtService.verify(req.headers.authorization, req.body)
         next()
@@ -11,21 +12,34 @@ function tokenVerification(req, res, next) {
         res.send(envelope.wrapUnauthorized('token error', 'Invalid Token')).end()
     }
 }
-function authorize(roles = []) {
-    if (typeof roles === 'string') {
-        roles = [roles];
+function authorize(aRoles = [], aResource) {
+    if (typeof aRoles === 'string') {
+        aRoles = [aRoles];
     }
     return [
         (req, res, next) => {
-            let token = req.verifiedToken;
-            if (token && roles.length && !roles.some(r => token.roles.indexOf(r) >= 0)) {
-                res.status(403)
-                return res.send(envelope.wrapUnauthorized("Unauthorized", "Access denied!"))
+            let tMethod = req.method,
+                tRole = req.verifiedToken.auth.role,
+                tResource = req.verifiedToken.auth.resource,
+                tPermission = req.verifiedToken.auth.permission,
+                tResources = [], tPermissions = [];
+            tResources = tResource.split(",");
+            tPermissions = tPermission.split(",");
+            if (aRoles.indexOf(tRole) > -1) {
+                let resIndex = tResources.indexOf(aResource);
+                if (resIndex > -1) {
+                    p_util.permission.forEach(p => {
+                        if (p.id == tPermissions[resIndex] && p.perm.includes(tMethod))
+                            next()
+                        else
+                            res.send(envelope.wrapUnauthorized('permission is not given', 'Access Denied')).end()
+                    });
+                }
+                res.send(envelope.wrapUnauthorized('not authorized to access this resource', 'Access Denied')).end()
             }
-            else
-                next();
+            res.send(envelope.wrapUnauthorized('not authorized', 'Access Denied')).end()
         }
     ];
 };
 
-module.exports = { authorize, JwtService, tokenVerification };
+module.exports = { authorize, JwtService, authenticate };

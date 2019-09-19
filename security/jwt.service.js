@@ -9,19 +9,19 @@ var publicKEY = fs.readFileSync(path.resolve('security/public.key'), 'utf8');
 module.exports = {
     sign: (payload, $Options) => {
         var signOptions = {
-            issuer: $Options.issuer,
+            issuer: jwtUtil.issuer,
             subject: $Options.subject,
-            audience: $Options.audience,
-            expiresIn: jwtUtil.expiration,  
+            audience: jwtUtil.audience,
+            expiresIn: jwtUtil.expiration,
             algorithm: jwtUtil.algorithm
         };
         return jwt.sign(payload, privateKEY, signOptions);
     },
     verify: (token, $Option) => {
         var verifyOptions = {
-            issuer: $Option.issuer,
+            issuer: jwtUtil.issuer,
             subject: $Option.subject,
-            audience: $Option.audience,
+            audience: jwtUtil.audience,
             expiresIn: jwtUtil.expiration,
             algorithm: [jwtUtil.algorithm]
         };
