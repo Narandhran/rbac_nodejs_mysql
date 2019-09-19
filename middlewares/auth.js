@@ -28,16 +28,17 @@ function authorize(aRoles = [], aResource) {
             if (aRoles.indexOf(tRole) > -1) {
                 let resIndex = tResources.indexOf(aResource);
                 if (resIndex > -1) {
-                    p_util.permission.forEach(p => {
-                        if (p.id == tPermissions[resIndex] && p.perm.includes(tMethod))
+                    for (let i = 0; i < p_util.permission.length; i++) {
+                        if (p_util.permission.id == tPermissions[resIndex] && p_util.permission.perm.includes(tMethod)) {
                             next()
-                        else
-                            res.send(envelope.wrapUnauthorized('permission is not given', 'Access Denied')).end()
-                    });
-                }
-                res.send(envelope.wrapUnauthorized('not authorized to access this resource', 'Access Denied')).end()
-            }
-            res.send(envelope.wrapUnauthorized('not authorized', 'Access Denied')).end()
+                            break;
+                        }
+                    }
+                    res.send(envelope.wrapNoContent('permission is not given', 'Access Denied')).end()
+                } else
+                    res.send(envelope.wrapNoContent('not authorized to access this resource', 'Access Denied')).end()
+            } else
+                res.send(envelope.wrapNoContent('not authorized', 'Access Denied')).end()
         }
     ];
 };

@@ -32,5 +32,14 @@ module.exports = {
     },
     authorize(req, res) {
         res.send('success');
+    },
+    authorize1(req, res) {
+        res.send('success');
+    },
+    authorize2(req, res) {
+        res.send('success');
+    },
+    authorize3(req, res) {
+        res.send('success');
     }
 }
